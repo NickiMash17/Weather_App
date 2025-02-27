@@ -9,13 +9,21 @@ The Enhanced Weather App allows users to search for weather data by city name or
 ## ✨ Features
 
 ✔ Real-Time Weather Data – Fetch live weather conditions, hourly, and 5-day forecasts via OpenWeatherMap API.
+
 ✔ Interactive UI – Glassmorphism design with smooth animations (Animate.css) and particle effects (particles.js).
+
 ✔ Dark & Light Mode – Switch themes for a personalized experience.
+
 ✔ Favorite Cities – Save and manage your favorite locations for quick access.
+
 ✔ Temperature Units – Seamlessly toggle between Celsius (°C) and Fahrenheit (°F).
+
 ✔ Responsive Design – Fully optimized for desktop, tablet, and mobile devices.
+
 ✔ Detailed Weather Information – Access humidity, wind speed, precipitation, visibility, pressure, cloud cover, sunrise, and sunset.
+
 ✔ Hourly & 5-Day Forecasts – View interactive charts for extended weather insights.
+
 ✔ Engaging Animations – Fade, pulse, bounce, and slide effects enhance the user experience.
 
 ## 🛠️ Technologies Used
