@@ -250,7 +250,7 @@
   }
   .nav-tabs .nav-link:hover::after { width: 100%; }
   .app.night-mode .nav-tabs .nav-link { color: #a0aec0; }
-  .app.night-mode .nav-tabs .nav-link.active { color: #e2e8f0; }
+  .app.night-mode .nav-tabs .nav-link.active { color: var(--dark-color); }
   .app.night-mode .nav-tabs { background: var(--glass-bg-dark); border-bottom: 1px solid #4a5568; }
   
   .tab-content { padding: 25px 0; }
