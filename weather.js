@@ -653,47 +653,6 @@ function clearError() {
 
 document.addEventListener("DOMContentLoaded", initApp);
 
-// Function to create and animate particles
-function createParticles(count, weatherType) {
-  const container = document.getElementById('particles-js');
-  if (!container) {
-      console.error('Particles container #particles-js not found');
-      return;
-  }
-
-  // Clear existing particles
-  container.innerHTML = '';
-
-  for (let i = 0; i < count; i++) {
-      const particle = document.createElement('div');
-      particle.className = 'particle';
-
-      // Randomize position and animation properties
-      const left = Math.random() * 100; // Percentage across width
-      const delay = Math.random() * 5; // Random delay up to 5s
-      const duration = weatherType === 'rainy' ? 1 + Math.random() * 0.5 : 5 + Math.random() * 5; // Faster for rain
-
-      particle.style.left = `${left}vw`;
-      particle.style.animationDelay = `${delay}s`;
-      particle.style.animationDuration = `${duration}s`;
-
-      // Adjust size based on weather
-      if (weatherType === 'rainy') {
-          particle.style.width = '2px';
-          particle.style.height = '10px';
-      } else if (weatherType === 'clear' || weatherType === 'night') {
-          particle.style.width = `${3 + Math.random() * 2}px`;
-          particle.style.height = particle.style.width;
-      } else {
-          particle.style.width = `${5 + Math.random() * 3}px`;
-          particle.style.height = particle.style.width;
-      }
-
-      container.appendChild(particle);
-  }
-  console.log(`Created ${count} particles for ${weatherType}`);
-}
-
 // Initialize with default particles
 function initializeParticles() {
   createParticles(50, 'clear'); // Default to clear weather
@@ -703,7 +662,7 @@ function initializeParticles() {
 function updateParticles(weatherIcon) {
   let weatherType = 'clear';
   let particleCount = 50;
-
+  
   if (weatherIcon.includes('01') || weatherIcon.includes('02')) {
       weatherType = 'clear';
       particleCount = 30; // Fewer particles for clear sky
@@ -720,7 +679,7 @@ function updateParticles(weatherIcon) {
       weatherType = 'night';
       particleCount = 40;
   }
-
+  
   createParticles(particleCount, weatherType);
 }
 
@@ -746,6 +705,46 @@ function setBackgroundByWeather(icon) {
   else if (icon.includes('09') || icon.includes('10') || icon.includes('11')) body.classList.add('rainy');
   else if (icon.includes('n')) body.classList.add('night');
   else body.classList.add('clear');
-
+  
   updateParticles(icon); // Update custom particles
+}
+// Function to create and animate particles
+function createParticles(count, weatherType) {
+  const container = document.getElementById('particles-js');
+  if (!container) {
+      console.error('Particles container #particles-js not found');
+      return;
+  }
+  
+  // Clear existing particles
+  container.innerHTML = '';
+  
+  for (let i = 0; i < count; i++) {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      
+      // Randomize position and animation properties
+      const left = Math.random() * 100; // Percentage across width
+      const delay = Math.random() * 5; // Random delay up to 5s
+      const duration = weatherType === 'rainy' ? 1 + Math.random() * 0.5 : 5 + Math.random() * 5; // Faster for rain
+      
+      particle.style.left = `${left}vw`;
+      particle.style.animationDelay = `${delay}s`;
+      particle.style.animationDuration = `${duration}s`;
+      
+      // Adjust size based on weather
+      if (weatherType === 'rainy') {
+          particle.style.width = '2px';
+          particle.style.height = '10px';
+      } else if (weatherType === 'clear' || weatherType === 'night') {
+          particle.style.width = `${3 + Math.random() * 2}px`;
+          particle.style.height = particle.style.width;
+      } else {
+          particle.style.width = `${5 + Math.random() * 3}px`;
+          particle.style.height = particle.style.width;
+      }
+      
+      container.appendChild(particle);
+  }
+  console.log(`Created ${count} particles for ${weatherType}`);
 }
