@@ -653,62 +653,7 @@ function clearError() {
 
 document.addEventListener("DOMContentLoaded", initApp);
 
-// Initialize with default particles
-function initializeParticles() {
-  createParticles(50, 'clear'); // Default to clear weather
-}
-
-// Update particles based on weather
-function updateParticles(weatherIcon) {
-  let weatherType = 'clear';
-  let particleCount = 50;
-  
-  if (weatherIcon.includes('01') || weatherIcon.includes('02')) {
-      weatherType = 'clear';
-      particleCount = 30; // Fewer particles for clear sky
-  } else if (weatherIcon.includes('03') || weatherIcon.includes('04')) {
-      weatherType = 'cloudy';
-      particleCount = 60;
-  } else if (weatherIcon.includes('09') || weatherIcon.includes('10') || weatherIcon.includes('11')) {
-      weatherType = 'rainy';
-      particleCount = 100;
-  } else if (weatherIcon.includes('13')) {
-      weatherType = 'snow'; // We'll use cloudy style for simplicity
-      particleCount = 80;
-  } else if (weatherIcon.includes('n')) {
-      weatherType = 'night';
-      particleCount = 40;
-  }
-  
-  createParticles(particleCount, weatherType);
-}
-
-// Update initApp
-function initApp() {
-  console.log('Initializing app');
-  renderFavorites();
-  setupEventListeners();
-  loadSavedSettings();
-  const lastCity = localStorage.getItem("lastCity") || "New York";
-  initializeParticles(); // Start with default particles
-  searchCity(lastCity);
-  setupFooterAnimations();
-}
-
-// Update setBackgroundByWeather
-function setBackgroundByWeather(icon) {
-  const body = document.body;
-  body.classList.remove('clear', 'cloudy', 'rainy', 'night');
-  
-  if (icon.includes('01') || icon.includes('02')) body.classList.add('clear');
-  else if (icon.includes('03') || icon.includes('04')) body.classList.add('cloudy');
-  else if (icon.includes('09') || icon.includes('10') || icon.includes('11')) body.classList.add('rainy');
-  else if (icon.includes('n')) body.classList.add('night');
-  else body.classList.add('clear');
-  
-  updateParticles(icon); // Update custom particles
-}
-// Function to create and animate particles
+// Enhanced particle creation with more dynamic effects
 function createParticles(count, weatherType) {
   const container = document.getElementById('particles-js');
   if (!container) {
@@ -719,32 +664,533 @@ function createParticles(count, weatherType) {
   // Clear existing particles
   container.innerHTML = '';
   
+  // Create gradient elements for special effects based on weather
+  if (weatherType === 'clear') {
+      // Add sun glow effect
+      const sunGlow = document.createElement('div');
+      sunGlow.className = 'sun-glow';
+      container.appendChild(sunGlow);
+  } else if (weatherType === 'night') {
+      // Add moon glow effect
+      const moonGlow = document.createElement('div');
+      moonGlow.className = 'moon-glow';
+      container.appendChild(moonGlow);
+      
+      // Add stars background
+      for (let i = 0; i < 20; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          star.style.left = `${Math.random() * 100}vw`;
+          star.style.top = `${Math.random() * 60}vh`;
+          star.style.animationDelay = `${Math.random() * 5}s`;
+          container.appendChild(star);
+      }
+  } else if (weatherType === 'cloudy') {
+      // Add floating clouds
+      for (let i = 0; i < 5; i++) {
+          const cloud = document.createElement('div');
+          cloud.className = 'cloud';
+          cloud.style.left = `${Math.random() * 100}vw`;
+          cloud.style.top = `${Math.random() * 40}vh`;
+          cloud.style.opacity = 0.3 + (Math.random() * 0.4);
+          cloud.style.animationDuration = `${30 + Math.random() * 40}s`;
+          cloud.style.animationDelay = `${Math.random() * 15}s`;
+          cloud.style.transform = `scale(${0.5 + Math.random() * 0.8})`;
+          container.appendChild(cloud);
+      }
+  }
+  
+  // Create standard particles with enhanced effects
   for (let i = 0; i < count; i++) {
       const particle = document.createElement('div');
+      
+      // Set base class and weather-specific class
       particle.className = 'particle';
+      
+      // Add specific type class
+      if (weatherType === 'snow') {
+          particle.classList.add('snowflake');
+      } else if (weatherType === 'rainy') {
+          particle.classList.add('raindrop');
+          // Random chance for "splash" effect
+          if (Math.random() > 0.9) {
+              particle.classList.add('splash');
+          }
+      } else if (weatherType === 'clear') {
+          particle.classList.add('sunbeam');
+      } else if (weatherType === 'night') {
+          particle.classList.add('stardust');
+      } else {
+          particle.classList.add('cloudbit');
+      }
       
       // Randomize position and animation properties
       const left = Math.random() * 100; // Percentage across width
-      const delay = Math.random() * 5; // Random delay up to 5s
-      const duration = weatherType === 'rainy' ? 1 + Math.random() * 0.5 : 5 + Math.random() * 5; // Faster for rain
+      const top = -10 - (Math.random() * 20); // Start above viewport randomly
+      const delay = Math.random() * 8; // Random delay up to 8s
       
-      particle.style.left = `${left}vw`;
-      particle.style.animationDelay = `${delay}s`;
-      particle.style.animationDuration = `${duration}s`;
+      // Enhanced randomness in animations
+      const duration = getAnimationDuration(weatherType);
+      const scale = getParticleScale(weatherType);
       
-      // Adjust size based on weather
-      if (weatherType === 'rainy') {
-          particle.style.width = '2px';
-          particle.style.height = '10px';
-      } else if (weatherType === 'clear' || weatherType === 'night') {
-          particle.style.width = `${3 + Math.random() * 2}px`;
-          particle.style.height = particle.style.width;
-      } else {
-          particle.style.width = `${5 + Math.random() * 3}px`;
-          particle.style.height = particle.style.width;
-      }
+      // Apply styles directly
+      particle.style.cssText = `
+          left: ${left}vw;
+          top: ${top}vh;
+          animation-delay: ${delay}s;
+          animation-duration: ${duration}s;
+          transform: scale(${scale});
+      `;
+      
+      // Weather-specific styles
+      applyWeatherStyles(particle, weatherType);
       
       container.appendChild(particle);
   }
-  console.log(`Created ${count} particles for ${weatherType}`);
+  
+  console.log(`Created ${count} enhanced particles for ${weatherType} weather`);
 }
+
+// Get appropriate animation duration based on weather
+function getAnimationDuration(weatherType) {
+  switch(weatherType) {
+      case 'rainy':
+          return (0.8 + Math.random() * 0.7) + 's'; // Faster for rain
+      case 'snow':
+          return (7 + Math.random() * 8) + 's'; // Slowest for snow
+      case 'clear':
+          return (12 + Math.random() * 15) + 's'; // Medium-slow for clear skies
+      case 'night':
+          return (15 + Math.random() * 20) + 's'; // Slower for night
+      default: // cloudy
+          return (10 + Math.random() * 10) + 's'; // Medium for clouds
+  }
+}
+
+// Get appropriate scale based on weather
+function getParticleScale(weatherType) {
+  switch(weatherType) {
+      case 'rainy':
+          return 0.8 + (Math.random() * 0.4);
+      case 'snow':
+          return 0.6 + (Math.random() * 0.8);
+      case 'clear':
+          return 1 + (Math.random() * 1.5);
+      case 'night':
+          return 0.3 + (Math.random() * 1.2);
+      default: // cloudy
+          return 0.9 + (Math.random() * 1.2);
+  }
+}
+
+// Apply specific styles based on weather type
+function applyWeatherStyles(particle, weatherType) {
+  if (weatherType === 'rainy') {
+      // Raindrop effect
+      particle.style.width = '2px';
+      particle.style.height = `${8 + Math.random() * 12}px`;
+      particle.style.opacity = 0.6 + (Math.random() * 0.3);
+      particle.style.background = 'linear-gradient(to bottom, rgba(74, 144, 226, 0.1), rgba(74, 144, 226, 0.8))';
+      particle.style.borderRadius = '40%';
+      particle.style.filter = 'blur(0.5px)';
+      
+      // For splash raindrops
+      if (particle.classList.contains('splash')) {
+          particle.style.opacity = '0';
+          particle.style.width = '0px';
+          particle.style.height = '0px';
+      }
+  } else if (weatherType === 'snow') {
+      // Snowflake effect
+      const size = 3 + Math.random() * 5;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.borderRadius = '50%';
+      particle.style.background = 'radial-gradient(circle, rgba(255,255,255,0.9) 30%, rgba(240,240,255,0.4) 80%)';
+      particle.style.boxShadow = '0 0 5px rgba(255, 255, 255, 0.8)';
+      particle.style.opacity = 0.7 + (Math.random() * 0.3);
+      particle.style.filter = 'blur(0.3px)';
+  } else if (weatherType === 'clear') {
+      // Sun particle effect
+      const size = 4 + Math.random() * 8;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.borderRadius = '50%';
+      particle.style.background = 'radial-gradient(circle, rgba(255,236,179,0.9) 20%, rgba(255,167,38,0.3) 70%)';
+      particle.style.boxShadow = '0 0 10px rgba(255, 191, 0, 0.6)';
+      particle.style.opacity = 0.4 + (Math.random() * 0.3);
+      particle.style.filter = 'blur(1px)';
+  } else if (weatherType === 'night') {
+      // Star dust effect
+      const size = 2 + Math.random() * 4;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.borderRadius = '50%';
+      
+      // Add variation to star colors
+      const colors = [
+          'radial-gradient(circle, rgba(226,232,240,0.9) 10%, rgba(148,163,184,0.2) 70%)',
+          'radial-gradient(circle, rgba(191,219,254,0.9) 10%, rgba(56,189,248,0.2) 70%)',
+          'radial-gradient(circle, rgba(254,249,195,0.9) 10%, rgba(234,179,8,0.2) 70%)'
+      ];
+      
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.boxShadow = '0 0 8px rgba(255, 255, 255, 0.8)';
+      particle.style.opacity = 0.3 + (Math.random() * 0.7);
+  } else {
+      // Cloud particle effect
+      const size = 6 + Math.random() * 10;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.borderRadius = '50%';
+      particle.style.background = 'radial-gradient(circle, rgba(204,204,204,0.8) 30%, rgba(187,187,187,0.3) 80%)';
+      particle.style.opacity = 0.3 + (Math.random() * 0.2);
+      particle.style.filter = 'blur(2px)';
+  }
+}
+
+// Update setBackgroundByWeather with enhanced special effects
+function setBackgroundByWeather(icon) {
+  const body = document.body;
+  // Remove all weather classes and special elements
+  body.classList.remove('clear', 'cloudy', 'rainy', 'snow', 'night');
+  removeSpecialEffects();
+  
+  let weatherType = 'clear'; // Default
+  
+  // Add appropriate class based on detailed conditions
+  if (icon.includes('01d') || icon.includes('02d')) {
+      body.classList.add('clear');
+      weatherType = 'clear';
+      addLightningEffect(false); // No lightning
+  } 
+  else if (icon.includes('01n') || icon.includes('02n')) {
+      body.classList.add('night');
+      weatherType = 'night';
+      addLightningEffect(false); // No lightning
+  }
+  else if (icon.includes('03') || icon.includes('04')) {
+      body.classList.add('cloudy');
+      weatherType = 'cloudy';
+      addLightningEffect(false); // No lightning
+  } 
+  else if (icon.includes('09') || icon.includes('10')) {
+      body.classList.add('rainy');
+      weatherType = 'rainy';
+      addLightningEffect(false); // No lightning by default
+  } 
+  else if (icon.includes('11')) {
+      body.classList.add('rainy'); // Thunderstorm
+      weatherType = 'rainy';
+      addLightningEffect(true); // Add lightning effect
+  } 
+  else if (icon.includes('13')) {
+      body.classList.add('cloudy'); // Snow, using cloudy background
+      weatherType = 'snow';
+      addLightningEffect(false); // No lightning
+  } 
+  else {
+      body.classList.add('clear'); // Default
+      weatherType = 'clear';
+      addLightningEffect(false); // No lightning
+  }
+  
+  // Create particles with enhanced effects
+  createEnhancedParticles(weatherType);
+}
+
+// Create particles with count appropriate to weather type
+function createEnhancedParticles(weatherType) {
+  let particleCount;
+  
+  // Set appropriate particle counts by weather type
+  switch(weatherType) {
+      case 'clear':
+          particleCount = 40;
+          break;
+      case 'cloudy':
+          particleCount = 70;
+          break;
+      case 'rainy':
+          particleCount = 150;
+          break;
+      case 'snow':
+          particleCount = 100;
+          break;
+      case 'night':
+          particleCount = 60;
+          break;
+      default:
+          particleCount = 50;
+  }
+  
+  // Create particles with the explicit weather type
+  createParticles(particleCount, weatherType);
+}
+
+// Remove special effects when changing weather
+function removeSpecialEffects() {
+  // Remove lightning effect if it exists
+  const lightning = document.querySelector('.lightning');
+  if (lightning) {
+      lightning.remove();
+  }
+}
+
+// Add lightning effect for thunderstorms
+function addLightningEffect(enable) {
+  // Remove existing lightning if any
+  removeSpecialEffects();
+  
+  if (enable) {
+      const lightning = document.createElement('div');
+      lightning.className = 'lightning';
+      document.body.appendChild(lightning);
+  }
+}
+
+// Setup enhanced weather animations
+function setupWeatherAnimations() {
+  // Ensure the particles container exists
+  if (!document.getElementById('particles-js')) {
+      const particlesContainer = document.createElement('div');
+      particlesContainer.id = 'particles-js';
+      particlesContainer.className = 'particles-container';
+      document.body.prepend(particlesContainer);
+  }
+  
+  // Create enhanced resize handler for responsive animations
+  window.addEventListener('resize', function() {
+      // Get current weather type
+      const body = document.body;
+      let weatherType = 'clear';
+      
+      if (body.classList.contains('night')) {
+          weatherType = 'night';
+      } else if (body.classList.contains('rainy')) {
+          weatherType = 'rainy';
+      } else if (body.classList.contains('cloudy')) {
+          weatherType = 'cloudy';
+          if (document.querySelector('.particle.snowflake')) {
+              weatherType = 'snow';
+          }
+      }
+      
+      // Recreate particles for current window size
+      createEnhancedParticles(weatherType);
+  });
+}
+
+// Enhanced initialization 
+function initApp() {
+  console.log('Initializing weather app with enhanced animations');
+  
+  // Standard app initialization
+  renderFavorites();
+  setupEventListeners();
+  loadSavedSettings();
+  
+  // Setup enhanced animations
+  setupWeatherAnimations();
+  
+  // Start with default particles
+  createEnhancedParticles('clear');
+  
+  // Load last city or default
+  const lastCity = localStorage.getItem("lastCity") || "New York";
+  searchCity(lastCity);
+}
+
+// Handle intermittent animations for special effects
+function setupIntervalEffects() {
+  // Add occasional lightning for thunderstorms
+  setInterval(function() {
+      const body = document.body;
+      if (body.classList.contains('rainy') && document.querySelector('.lightning')) {
+          // Random flash timing
+          const flash = document.querySelector('.lightning');
+          flash.style.animation = 'none';
+          void flash.offsetWidth; // Trigger reflow
+          flash.style.animation = `lightning ${5 + Math.random() * 10}s infinite`;
+      }
+  }, 10000);
+}
+
+// Add window load event listener to ensure DOM is fully loaded
+window.addEventListener('load', function() {
+  initApp();
+  setupIntervalEffects();
+});
+
+// Update setBackgroundByWeather with enhanced special effects
+function setBackgroundByWeather(icon) {
+  const body = document.body;
+  // Remove all weather classes and special elements
+  body.classList.remove('clear', 'cloudy', 'rainy', 'snow', 'night');
+  removeSpecialEffects();
+  
+  let weatherType = 'clear'; // Default
+  
+  // Add appropriate class based on detailed conditions
+  if (icon.includes('01d') || icon.includes('02d')) {
+      body.classList.add('clear');
+      weatherType = 'clear';
+      addLightningEffect(false); // No lightning
+  } 
+  else if (icon.includes('01n') || icon.includes('02n')) {
+      body.classList.add('night');
+      weatherType = 'night';
+      addLightningEffect(false); // No lightning
+  }
+  else if (icon.includes('03') || icon.includes('04')) {
+      body.classList.add('cloudy');
+      weatherType = 'cloudy';
+      addLightningEffect(false); // No lightning
+  } 
+  else if (icon.includes('09') || icon.includes('10')) {
+      body.classList.add('rainy');
+      weatherType = 'rainy';
+      addLightningEffect(false); // No lightning by default
+  } 
+  else if (icon.includes('11')) {
+      body.classList.add('rainy'); // Thunderstorm
+      weatherType = 'rainy';
+      addLightningEffect(true); // Add lightning effect
+  } 
+  else if (icon.includes('13')) {
+      body.classList.add('cloudy'); // Snow, using cloudy background
+      weatherType = 'snow';
+      addLightningEffect(false); // No lightning
+  } 
+  else {
+      body.classList.add('clear'); // Default
+      weatherType = 'clear';
+      addLightningEffect(false); // No lightning
+  }
+  
+  // Create particles with enhanced effects
+  createEnhancedParticles(weatherType);
+}
+
+// Create particles with count appropriate to weather type
+function createEnhancedParticles(weatherType) {
+  let particleCount;
+  
+  // Set appropriate particle counts by weather type
+  switch(weatherType) {
+      case 'clear':
+          particleCount = 40;
+          break;
+      case 'cloudy':
+          particleCount = 70;
+          break;
+      case 'rainy':
+          particleCount = 150;
+          break;
+      case 'snow':
+          particleCount = 100;
+          break;
+      case 'night':
+          particleCount = 60;
+          break;
+      default:
+          particleCount = 50;
+  }
+  
+  // Create particles with the explicit weather type
+  createParticles(particleCount, weatherType);
+}
+
+// Remove special effects when changing weather
+function removeSpecialEffects() {
+  // Remove lightning effect if it exists
+  const lightning = document.querySelector('.lightning');
+  if (lightning) {
+      lightning.remove();
+  }
+}
+
+// Add lightning effect for thunderstorms
+function addLightningEffect(enable) {
+  // Remove existing lightning if any
+  removeSpecialEffects();
+  
+  if (enable) {
+      const lightning = document.createElement('div');
+      lightning.className = 'lightning';
+      document.body.appendChild(lightning);
+  }
+}
+
+// Setup enhanced weather animations
+function setupWeatherAnimations() {
+  // Ensure the particles container exists
+  if (!document.getElementById('particles-js')) {
+      const particlesContainer = document.createElement('div');
+      particlesContainer.id = 'particles-js';
+      particlesContainer.className = 'particles-container';
+      document.body.prepend(particlesContainer);
+  }
+  
+  // Create enhanced resize handler for responsive animations
+  window.addEventListener('resize', function() {
+      // Get current weather type
+      const body = document.body;
+      let weatherType = 'clear';
+      
+      if (body.classList.contains('night')) {
+          weatherType = 'night';
+      } else if (body.classList.contains('rainy')) {
+          weatherType = 'rainy';
+      } else if (body.classList.contains('cloudy')) {
+          weatherType = 'cloudy';
+          if (document.querySelector('.particle.snowflake')) {
+              weatherType = 'snow';
+          }
+      }
+      
+      // Recreate particles for current window size
+      createEnhancedParticles(weatherType);
+  });
+}
+
+// Enhanced initialization 
+function initApp() {
+  console.log('Initializing weather app with enhanced animations');
+  
+  // Standard app initialization
+  renderFavorites();
+  setupEventListeners();
+  loadSavedSettings();
+  
+  // Setup enhanced animations
+  setupWeatherAnimations();
+  
+  // Start with default particles
+  createEnhancedParticles('clear');
+  
+  // Load last city or default
+  const lastCity = localStorage.getItem("lastCity") || "New York";
+  searchCity(lastCity);
+}
+
+// Handle intermittent animations for special effects
+function setupIntervalEffects() {
+  // Add occasional lightning for thunderstorms
+  setInterval(function() {
+      const body = document.body;
+      if (body.classList.contains('rainy') && document.querySelector('.lightning')) {
+          // Random flash timing
+          const flash = document.querySelector('.lightning');
+          flash.style.animation = 'none';
+          void flash.offsetWidth; // Trigger reflow
+          flash.style.animation = `lightning ${5 + Math.random() * 10}s infinite`;
+      }
+  }, 10000);
+}
+
+// Add window load event listener to ensure DOM is fully loaded
+window.addEventListener('load', function() {
+  initApp();
+  setupIntervalEffects();
+});

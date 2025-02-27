@@ -35,111 +35,293 @@
   body.cloudy { background: linear-gradient(135deg, #718096, #cbd5e0); }
   body.clear { background: linear-gradient(135deg, #4299e1, #90cdf4); }
   
-  .particles-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    pointer-events: none;
-    overflow: hidden;
+/* Particle container styles */
+/* Particle container styles with improved performance */
+.particles-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
 }
 
+/* Special elements for weather effects */
+.sun-glow {
+  position: absolute;
+  top: 10vh;
+  right: 10vw;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,236,179,0.7) 0%, rgba(255,167,38,0.4) 40%, transparent 70%);
+  box-shadow: 0 0 60px rgba(255, 191, 0, 0.8);
+  animation: pulse 10s infinite ease-in-out;
+  z-index: 1;
+}
+
+.moon-glow {
+  position: absolute;
+  top: 15vh;
+  right: 15vw;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(226,232,240,0.7) 0%, rgba(148,163,184,0.3) 40%, transparent 70%);
+  box-shadow: 0 0 40px rgba(203, 213, 225, 0.6);
+  animation: pulse 15s infinite ease-in-out;
+  z-index: 1;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: white;
+  box-shadow: 0 0 4px white;
+  animation: twinkle 4s infinite alternate ease-in-out;
+  z-index: 1;
+}
+
+.cloud {
+  position: absolute;
+  width: 200px;
+  height: 60px;
+  border-radius: 50px;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.8), rgba(240, 240, 240, 0.4));
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+  animation: float-cloud linear infinite;
+  z-index: 1;
+}
+
+/* Base particle styles */
 .particle {
-    position: absolute;
-    background: #ffffff;
-    opacity: 0.5;
-    animation: fall linear infinite;
+  position: absolute;
+  top: -10vh;
+  will-change: transform, opacity; /* Performance optimization */
 }
 
-/* Base fall animation */
-@keyframes fall {
-    0% { transform: translateY(-10vh); opacity: 0.5; }
-    100% { transform: translateY(110vh); opacity: 0; }
+/* Enhanced animations for different particle types */
+.particle.raindrop {
+  animation: rainFall linear infinite, rainSway 1.5s infinite alternate;
 }
 
-/* Enhanced weather-specific effects */
-body.clear .particle {
-    background: radial-gradient(circle, #ffebd3 20%, transparent 70%); /* Sun glow */
-    border-radius: 50%;
-    animation: twinkle 4s infinite ease-in-out, float 6s infinite ease-in-out;
+.particle.snowflake {
+  animation: snowFall linear infinite, snowDrift 3s infinite ease-in-out;
 }
 
-body.cloudy .particle {
-    background: linear-gradient(135deg, #cccccc 40%, #aaaaaa 80%); /* Cloudy texture */
-    border-radius: 20%;
-    animation: drift 12s infinite linear, puff 3s infinite ease-in-out;
+.particle.sunbeam {
+  animation: sunbeamFall linear infinite, sunbeamGlow 4s infinite alternate;
 }
 
-body.rainy .particle {
-    background: linear-gradient(#4a90e2, #2b6cb0); /* Rain gradient */
-    width: 2px;
-    height: 15px;
-    border-radius: 2px;
-    animation: rainFall 0.8s infinite linear, sway 1s infinite alternate;
+.particle.stardust {
+  animation: starFloat linear infinite, starTwinkle 3s infinite alternate;
 }
 
-body.night .particle {
-    background: radial-gradient(circle, #e2e8f0 10%, transparent 60%); /* Star glow */
-    border-radius: 50%;
-    animation: twinkle 3s infinite ease-in-out, orbit 8s infinite ease-in-out;
+.particle.cloudbit {
+  animation: cloudFloat linear infinite, cloudPulse 5s infinite alternate;
 }
 
-/* Snow-specific (we'll add this class in JS) */
-body.rainy .particle.snowflake {
-    background: radial-gradient(circle, #ffffff 20%, transparent 70%);
-    border-radius: 50%;
-    animation: snowFall 4s infinite linear, wobble 2s infinite ease-in-out;
+/* Special animation for splash raindrops */
+.particle.splash {
+  animation: splash 1s forwards;
+  animation-delay: calc(var(--animation-duration, 2s) * 0.8) !important;
 }
 
-/* Enhanced animations */
-@keyframes twinkle {
-    0%, 100% { opacity: 0.3; transform: scale(0.8); }
-    50% { opacity: 1; transform: scale(1.2); }
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(-5vh) translateX(-2vw); }
-    50% { transform: translateY(5vh) translateX(2vw); }
-}
-
-@keyframes drift {
-    0% { transform: translateX(-20vw) translateY(-10vh); opacity: 0.4; }
-    100% { transform: translateX(120vw) translateY(110vh); opacity: 0; }
-}
-
-@keyframes puff {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.3); }
-}
-
+/* Enhanced keyframe animations */
 @keyframes rainFall {
-    0% { transform: translateY(-10vh); opacity: 0.7; }
-    100% { transform: translateY(110vh); opacity: 0; }
+  0% { transform: translateY(-10vh); }
+  100% { transform: translateY(110vh); }
 }
 
-@keyframes sway {
-    0% { transform: translateX(-3px); }
-    100% { transform: translateX(3px); }
+@keyframes rainSway {
+  0% { transform: translateX(-2px); }
+  100% { transform: translateX(2px); }
 }
 
 @keyframes snowFall {
-    0% { transform: translateY(-10vh); opacity: 0.8; }
-    100% { transform: translateY(110vh); opacity: 0; }
+  0% { 
+      transform: translateY(-10vh) rotate(0deg); 
+      opacity: 0;
+  }
+  10% {
+      opacity: 0.7;
+  }
+  80% {
+      opacity: 0.7;
+  }
+  100% { 
+      transform: translateY(110vh) rotate(360deg); 
+      opacity: 0;
+  }
 }
 
-@keyframes wobble {
-    0% { transform: translateX(-5px) rotate(5deg); }
-    100% { transform: translateX(5px) rotate(-5deg); }
+@keyframes snowDrift {
+  0% { transform: translateX(-10px); }
+  50% { transform: translateX(10px); }
+  100% { transform: translateX(-10px); }
 }
 
-@keyframes orbit {
-    0% { transform: translateY(-5vh) translateX(-3vw); }
-    25% { transform: translateY(0vh) translateX(3vw); }
-    50% { transform: translateY(5vh) translateX(-3vw); }
-    75% { transform: translateY(0vh) translateX(3vw); }
-    100% { transform: translateY(-5vh) translateX(-3vw); }
+@keyframes sunbeamFall {
+  0% { 
+      transform: translateY(-20vh) translateX(-20vw); 
+      opacity: 0;
+  }
+  20% {
+      opacity: 0.7;
+  }
+  100% { 
+      transform: translateY(120vh) translateX(20vw); 
+      opacity: 0;
+  }
+}
+
+@keyframes sunbeamGlow {
+  0%, 100% { filter: blur(1px) brightness(1); }
+  50% { filter: blur(2px) brightness(1.5); }
+}
+
+@keyframes starFloat {
+  0% { 
+      transform: translateY(-10vh) translateX(-5vw);
+      opacity: 0; 
+  }
+  10% {
+      opacity: 0.7;
+  }
+  90% {
+      opacity: 0.7;
+  }
+  100% { 
+      transform: translateY(110vh) translateX(5vw);
+      opacity: 0;
+  }
+}
+
+@keyframes starTwinkle {
+  0%, 100% { 
+      filter: blur(0.5px) brightness(0.8); 
+      transform: scale(0.8);
+  }
+  50% { 
+      filter: blur(1px) brightness(1.3); 
+      transform: scale(1.2);
+  }
+}
+
+@keyframes cloudFloat {
+  0% { 
+      transform: translateX(-20vw);
+      opacity: 0; 
+  }
+  10% {
+      opacity: 0.5;
+  }
+  90% {
+      opacity: 0.5;
+  }
+  100% { 
+      transform: translateX(120vw);
+      opacity: 0; 
+  }
+}
+
+@keyframes cloudPulse {
+  0%, 100% { 
+      filter: blur(2px); 
+      transform: scale(0.9);
+  }
+  50% { 
+      filter: blur(3px); 
+      transform: scale(1.1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+  50% { transform: scale(1.1) rotate(5deg); opacity: 0.9; }
+}
+
+@keyframes float-cloud {
+  0% { transform: translateX(-300px); }
+  100% { transform: translateX(calc(100vw + 300px)); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes splash {
+  0% {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      transform: translateY(100vh) scale(0);
+  }
+  50% {
+      opacity: 0.7;
+      width: 15px;
+      height: 2px;
+      transform: translateY(100vh) scale(1);
+  }
+  100% {
+      opacity: 0;
+      width: 20px;
+      height: 2px;
+      transform: translateY(100vh) scale(1.2);
+  }
+}
+
+/* Weather background classes with enhanced gradients */
+body.clear {
+  background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 60%, #FFF8E1 100%);
+  transition: background 1.5s ease-in-out;
+}
+
+body.cloudy {
+  background: linear-gradient(to bottom, #B0C4DE 0%, #CFD8DC 60%, #ECEFF1 100%);
+  transition: background 1.5s ease-in-out;
+}
+
+body.rainy {
+  background: linear-gradient(to bottom, #4682B4 0%, #546E7A 60%, #37474F 100%);
+  transition: background 1.5s ease-in-out;
+  color: #E0E0E0;
+}
+
+body.night {
+  background: linear-gradient(to bottom, #0F2027 0%, #203A43 60%, #2C5364 100%);
+  transition: background 1.5s ease-in-out;
+  color: #E0E0E0;
+}
+
+/* Lightning effect for rainy/stormy weather */
+.lightning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  z-index: 1;
+  pointer-events: none;
+  animation: lightning 10s infinite;
+}
+
+@keyframes lightning {
+  0%, 5%, 95%, 100% {
+      background-color: rgba(255, 255, 255, 0);
+  }
+  1%, 3% {
+      background-color: rgba(255, 255, 255, 0.3);
+  }
+  2% {
+      background-color: rgba(255, 255, 255, 0.6);
+  }
 }
   
   a { color: var(--primary-color); text-decoration: none; transition: var(--transition); }
