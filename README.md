@@ -75,7 +75,7 @@ or use VS Code Live Server.
 # If you have the Live Server extension installed in VS Code:
 # Right-click on weather.html and select "Open with Live Server"
 ```
-````
+
 ## 🎯 Usage Guide
 
 1. **🔍 Search for a City**
