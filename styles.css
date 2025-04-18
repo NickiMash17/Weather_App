@@ -1072,3 +1072,14 @@ body.night {
         padding: 15px;
     }
 }
+@media screen and (max-width: 360px) {
+  /* Adjustments for very small screens */
+  body {
+    padding: 0 10px;
+  }
+  .button {
+    display: block;
+    width: 100%;
+    margin: 5px 0;
+  }
+}
