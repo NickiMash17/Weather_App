@@ -1087,208 +1087,169 @@ body.night {
    MOBILE RESPONSIVE STYLES
    ====================== */
 
-/* 1. Base Mobile Styles (applies to all screens) */
-.container {
-  width: 100%;
-  padding: 0 15px;
-  box-sizing: border-box;
-}
-
-.app {
-  width: 100%;
-  max-width: 100%;
-  margin: 10px auto;
-  padding: 15px;
-  box-sizing: border-box;
-}
-
-/* 2. Responsive Layout Adjustments */
-@media (max-width: 767px) {
-  /* Stack elements vertically on mobile */
-  .weather-data {
-    flex-direction: column;
-    text-align: center;
+   @media (max-width: 1023px) {
+    /* General container adjustments */
+    .app {
+      margin: 20px;
+      padding: 25px;
+    }
+    
+    /* Stack weather data elements */
+    .weather-data {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    
+    /* Adjust temperature display */
+    .temperature-app-container {
+      flex-direction: column;
+      margin-top: 15px;
+    }
+    
+    /* Make search form more mobile-friendly */
+    .search-form {
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .search-input {
+      width: 100%;
+    }
+    
+    .search-button {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    /* Adjust info items layout */
+    .additional-info {
+      justify-content: center;
+      gap: 10px;
+    }
+    
+    .info-item {
+      min-width: 120px;
+      padding: 15px;
+    }
+    
+    /* Forecast adjustments */
+    .weather-forecast {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .weather-forecast-day {
+      min-width: calc(50% - 20px);
+      margin: 0;
+    }
+    
+    /* Hourly forecast scrollable */
+    .hourly-forecast {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 10px;
+    }
+    
+    .hourly-container {
+      width: max-content;
+    }
   }
   
-  .temperature-app-container {
-    flex-direction: column;
-    margin-top: 15px;
+  /* Tablet-specific adjustments (768px - 1023px) */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .app {
+      max-width: 90%;
+    }
+    
+    .weather-forecast-day {
+      min-width: calc(33.333% - 20px);
+    }
   }
   
-  /* Adjust font sizes */
-  .app-city {
-    font-size: 28px;
-    line-height: 1.2;
+  /* Phone-specific adjustments (under 768px) */
+  @media (max-width: 767px) {
+    /* Adjust font sizes */
+    .app-city {
+      font-size: 32px;
+    }
+    
+    .app-temp {
+      font-size: 72px;
+      line-height: 1;
+    }
+    
+    /* Stack favorite cities */
+    .favorite-cities {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    /* Make hourly items slightly smaller */
+    .hourly-item {
+      min-width: 80px;
+      padding: 12px;
+    }
+    
+    /* Adjust chart sizing */
+    .chart-container {
+      height: 250px !important;
+    }
   }
   
-  .app-temp {
-    font-size: 72px;
-    line-height: 1;
+  /* Small phone adjustments (under 480px) */
+  @media (max-width: 480px) {
+    .app {
+      margin: 10px;
+      padding: 20px;
+    }
+    
+    .app-temp {
+      font-size: 64px;
+    }
+    
+    .weather-forecast-day {
+      min-width: 100%;
+    }
+    
+    .hourly-item {
+      min-width: 70px;
+    }
+    
+    /* Reduce particle effects on very small devices */
+    .particles-container,
+    .sun-glow,
+    .moon-glow {
+      display: none;
+    }
   }
   
-  .app-details {
-    font-size: 16px;
+  /* Landscape orientation adjustments */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .app {
+      margin: 5px auto;
+      padding: 15px;
+    }
+    
+    .weather-data {
+      flex-direction: row;
+      align-items: center;
+    }
+    
+    .temperature-app-container {
+      flex-direction: row;
+    }
+    
+    .additional-info {
+      flex-wrap: wrap;
+      justify-content: space-around;
+    }
   }
   
-  /* Make search form mobile-friendly */
-  .search-form {
-    flex-direction: column;
-    gap: 10px;
+  /* Accessibility: Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation: none !important;
+      transition: none !important;
+    }
   }
-  
-  .search-input {
-    width: 100%;
-    padding: 12px 15px;
-  }
-  
-  .search-button, 
-  .location-button {
-    width: 100%;
-  }
-  
-  /* Adjust info items grid */
-  .additional-info {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-  }
-  
-  .info-item {
-    padding: 12px;
-    min-width: auto;
-  }
-  
-  /* Forecast adjustments */
-  .weather-forecast {
-    flex-direction: column;
-    gap: 10px;
-  }
-  
-  .weather-forecast-day {
-    width: 100%;
-  }
-  
-  /* Hourly forecast scrollable */
-  .hourly-forecast {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 10px;
-  }
-  
-  .hourly-container {
-    width: max-content;
-  }
-  
-  /* Chart sizing */
-  .chart-container {
-    height: 250px !important;
-  }
-}
-
-/* 3. Tablet Styles (768px - 1023px) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  .app {
-    max-width: 90%;
-  }
-  
-  .additional-info {
-    grid-template-columns: repeat(3, 1fr);
-  }
-  
-  .weather-forecast-day {
-    flex: 0 0 calc(50% - 15px);
-  }
-}
-
-/* 4. Small Mobile Devices (under 400px) */
-@media (max-width: 400px) {
-  .app {
-    padding: 12px;
-  }
-  
-  .app-temp {
-    font-size: 60px;
-  }
-  
-  .info-item {
-    padding: 10px;
-  }
-  
-  .hourly-item {
-    min-width: 70px;
-  }
-}
-
-/* 5. Landscape Orientation */
-@media (max-height: 500px) and (orientation: landscape) {
-  .app {
-    margin: 5px auto;
-    padding: 10px;
-  }
-  
-  .weather-data {
-    flex-direction: row;
-    align-items: center;
-  }
-  
-  .temperature-app-container {
-    flex-direction: row;
-  }
-  
-  .additional-info {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* 6. Touch Target Sizing */
-button, a[role="button"], .favorite-toggle {
-  min-width: 44px;
-  min-height: 44px;
-}
-
-/* 7. Prevent Zoom on Input Focus */
-@media screen and (max-width: 767px) {
-  input, select, textarea {
-    font-size: 16px;
-  }
-}
-
-/* 8. Mobile-Specific Utility Classes */
-.mobile-only {
-  display: block;
-}
-
-.desktop-only {
-  display: none;
-}
-
-@media (min-width: 768px) {
-  .mobile-only {
-    display: none;
-  }
-  
-  .desktop-only {
-    display: block;
-  }
-}
-
-/* 9. Performance Optimizations for Mobile */
-@media (max-width: 767px) {
-  .particles-container,
-  .sun-glow,
-  .moon-glow {
-    display: none; /* Disable heavy animations on mobile */
-  }
-  
-  * {
-    animation: none !important; /* Reduce animations */
-    transition: none !important;
-  }
-}
-
-/* 10. Accessibility Improvements */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-}
