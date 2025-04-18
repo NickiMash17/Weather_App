@@ -1,20 +1,20 @@
 :root {
-    --primary-color: #4a90e2; /* Soft blue */
-    --secondary-color: #50e3c2; /* Teal */
-    --background-color: #f7f9fc; /* Light grayish-blue */
-    --text-color: #2d3748; /* Dark slate */
-    --dark-color: #2b6cb0; /* Deep blue */
-    --light-color: #ffffff; /* White */
-    --success-color: #38b2ac; /* Teal-green */
-    --warning-color: #ff9f43; /* Warm orange */
-    --danger-color: #f56565; /* Soft red */
-    --box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-    --glass-bg: rgba(255, 255, 255, 0.2);
-    --glass-bg-dark: rgba(45, 55, 72, 0.2);
-    --neon-color: #50e3c2; /* Neon teal */
-    --neon-shadow: 0 0 10px var(--neon-color), 0 0 20px var(--neon-color), 0 0 30px var(--neon-color);
-    --transition: all 0.4s ease-in-out;
-  }
+  --primary-color: #4a90e2; /* Soft blue */
+  --secondary-color: #50e3c2; /* Teal */
+  --background-color: #f7f9fc; /* Light grayish-blue */
+  --text-color: #2d3748; /* Dark slate */
+  --dark-color: #2b6cb0; /* Deep blue */
+  --light-color: #ffffff; /* White */
+  --success-color: #38b2ac; /* Teal-green */
+  --warning-color: #ff9f43; /* Warm orange */
+  --danger-color: #f56565; /* Soft red */
+  --box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.2);
+  --glass-bg-dark: rgba(45, 55, 72, 0.2);
+  --neon-color: #50e3c2; /* Neon teal */
+  --neon-shadow: 0 0 10px var(--neon-color), 0 0 20px var(--neon-color), 0 0 30px var(--neon-color);
+  --transition: all 0.4s ease-in-out;
+}
   
   body {
     background: linear-gradient(135deg, #6b7280, #e2e8f0);
@@ -293,24 +293,22 @@
 /* Weather background classes with enhanced gradients */
 body.clear {
   background: linear-gradient(to bottom, #87CEEB 0%, #E0F7FA 60%, #FFF8E1 100%);
-  transition: background 1.5s ease-in-out;
+  color: #2d3748;
 }
 
 body.cloudy {
   background: linear-gradient(to bottom, #B0C4DE 0%, #CFD8DC 60%, #ECEFF1 100%);
-  transition: background 1.5s ease-in-out;
+  color: #2d3748;
 }
 
 body.rainy {
   background: linear-gradient(to bottom, #4682B4 0%, #546E7A 60%, #37474F 100%);
-  transition: background 1.5s ease-in-out;
-  color: #E0E0E0;
+  color: #f0f9ff;
 }
 
 body.night {
   background: linear-gradient(to bottom, #0F2027 0%, #203A43 60%, #2C5364 100%);
-  transition: background 1.5s ease-in-out;
-  color: #E0E0E0;
+  color: #e2e8f0;
 }
 
 /* Lightning effect for rainy/stormy weather */
@@ -344,8 +342,8 @@ body.night {
   h1, h2, h3 { color: var(--primary-color); font-weight: 600; }
   
   .app {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
     text-align: center;
     max-width: 900px;
     margin: 40px auto;
@@ -356,14 +354,22 @@ body.night {
     position: relative;
     z-index: 2;
     animation: fadeIn 0.6s ease-out;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  
-  .app.night-mode {
-    background: var(--glass-bg-dark);
-    color: #edf2f7;
-    border: 1px solid rgba(74, 85, 104, 0.1);
-  }
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.app.night-mode {
+  background: rgba(45, 55, 72, 0.25);
+  color: #edf2f7;
+  border: 1px solid rgba(74, 85, 104, 0.3);
+}
+.app-temp {
+  font-size: 96px;
+  font-weight: bold;
+  line-height: 96px;
+  color: var(--primary-color);
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+}
   
   .app.night-mode h1, .app.night-mode h2, .app.night-mode h3,
   .app.night-mode .app-temp, .app.night-mode .unit, .app.night-mode .weather-max {
@@ -381,45 +387,41 @@ body.night {
     position: relative;
     max-width: 700px;
     margin: 0 auto 25px;
-  }
+    width: 100%;
+}
   
-  .search-form {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 25px;
-    animation: slideIn 0.5s ease-out;
-  }
+.search-form {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  animation: slideIn 0.5s ease-out;
+  width: 100%;
+}
+
   
-  .search-input {
-    background: var(--glass-bg);
-    border: none;
-    border-radius: 50px;
-    width: 70%;
-    padding: 16px 20px 16px 50px;
-    font-size: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    transition: var(--transition);
-    backdrop-filter: blur(5px);
-  }
-  
+.search-input {
+  background: var(--glass-bg);
+  border: 2px solid rgba(74, 144, 226, 0.3);
+  border-radius: 50px;
+  width: 100%;
+  padding: 16px 20px;
+  font-size: 16px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  transition: var(--transition);
+  backdrop-filter: blur(5px);
+  color: var(--text-color);
+  flex-grow: 1;
+}
+ 
+.search-input::placeholder {
+  color: rgba(45, 55, 72, 0.6);
+}
   .search-input:focus {
     outline: none;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     transform: scale(1.02);
     background: var(--light-color);
-  }
-  
-  .search-icon {
-    position: absolute;
-    left: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #718096;
-    z-index: 2;
-    pointer-events: none;
-    transition: var(--transition);
-    animation: pulse 1.5s infinite ease-in-out;
   }
   
   .search-button {
@@ -435,15 +437,17 @@ body.night {
     align-items: center;
     gap: 8px;
     cursor: pointer;
-  }
+    font-weight: 500;
+    white-space: nowrap;
+}
   
-  .search-button:hover {
-    background: var(--secondary-color);
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    animation: bounce 0.3s ease-out;
-  }
-  
+.search-button:hover {
+  background: var(--secondary-color);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  animation: bounce 0.3s ease-out;
+}
+
   .location-button {
     background: var(--primary-color);
     border: none;
@@ -606,24 +610,26 @@ body.night {
     align-items: center;
     margin: 12px;
     padding: 20px;
-    background: var(--glass-bg);
+    background: rgba(255, 255, 255, 0.3);
     border-radius: 15px;
     min-width: 120px;
     transition: var(--transition);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
     backdrop-filter: blur(5px);
     animation: bounceIn 0.8s ease-out;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 3;
-  }
-  
-  .info-item:hover {
-    transform: translateY(-5px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    background: var(--light-color);
-  }
-  
-  .app.night-mode .info-item { background: var(--glass-bg-dark); border: 1px solid rgba(74, 85, 104, 0.1); }
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+.info-item:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.app.night-mode .info-item {
+  background: rgba(45, 55, 72, 0.3);
+  border: 1px solid rgba(74, 85, 104, 0.2);
+}
+
   
   .info-icon { font-size: 28px; color: var(--primary-color); margin-bottom: 12px; }
   .info-value { font-size: 20px; font-weight: bold; color: var(--primary-color); }
@@ -743,19 +749,14 @@ body.night {
   .app.night-mode .hourly-item { background: var(--glass-bg-dark); border: 1px solid rgba(74, 85, 104, 0.1); }
   
   .chart-container {
-    position: relative;
-    height: 300px;
-    margin: 35px 0;
-    background: var(--glass-bg);
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.8s ease-out;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 3;
-  }
-  .app.night-mode .chart-container { background: var(--glass-bg-dark); border: 1px solid rgba(74, 85, 104, 0.1); }
-  main { padding: 25px 0; }
+    background: rgba(255, 255, 255, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+.app.night-mode .chart-container {
+  background: rgba(45, 55, 72, 0.3) !important;
+  border: 1px solid rgba(74, 85, 104, 0.2) !important;
+}
+
   
   footer {
     border-top: 2px solid var(--neon-color);
@@ -1029,3 +1030,38 @@ body.night {
     .info-item { min-width: 90px; padding: 12px; }
     footer { padding: 15px 0; font-size: 10px; }
   }
+  @media (max-width: 768px) {
+    .app {
+        margin: 20px; 
+        padding: 25px;
+    }
+    
+    .search-form {
+        flex-direction: column;
+    }
+    
+    .search-button {
+        width: 100%;
+    }
+    
+    .app-temp {
+        font-size: 72px;
+        line-height: 72px;
+    }
+}
+
+@media (max-width: 480px) {
+    .app {
+        padding: 20px;
+    }
+    
+    .app-temp {
+        font-size: 60px;
+        line-height: 60px;
+    }
+    
+    .info-item {
+        min-width: 100px;
+        padding: 15px;
+    }
+}
